@@ -5,9 +5,12 @@ import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import useAppSettings from '@/utils/appState';
 import { Link } from 'expo-router';
 
 export default function HomeScreen() {
+  const fontScale = useAppSettings((state)=>state.fontScale)
+  console.log('in index, fontScale ', fontScale)
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
