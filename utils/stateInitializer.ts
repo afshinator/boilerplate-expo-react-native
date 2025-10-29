@@ -1,9 +1,11 @@
+// utils/stateInitializer.ts
+
 import { fontScaleSize } from "@/constants/types";
 import useAppSettings from "./appState";
 import { getItem, setItem } from "./asyncStorage";
 
 // Define the keys we want to load from AsyncStorage.
-const ASYNC_STORAGE_KEYS = ["fontScale"];
+export const ASYNC_STORAGE_KEYS = ["fontScale"];
 
 /**
  * Loads specific state values from AsyncStorage and uses Zustand setters to initialize the store.
