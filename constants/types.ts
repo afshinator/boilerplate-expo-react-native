@@ -1,5 +1,5 @@
 // Define the possible string values for fontScale
-export type fontScaleSize = 'small' | 'default' | 'large' | 'extra-large';
+export type fontScaleSize = 'small' | 'default' | 'large' | 'x-large';
 
 interface AppState {
   fontScale: fontScaleSize;

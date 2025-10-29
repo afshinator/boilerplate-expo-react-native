@@ -33,12 +33,14 @@ export const LINE_HEIGHT_LINK = 30;
 export const FONT_WEIGHT_SEMIBOLD = '600';
 export const FONT_WEIGHT_BOLD = 'bold';
 
+export const FONT_SCALE_OPTIONS = ['small', 'default', 'large', 'x-large'] as const;
+
 // fontScale to fontScaleFactor 
 export const fontScaleFactors = {
   'small': 0.8,
   'default': 1.0,
   'large': 1.2,
-  'extra-large': 1.4
+  'x-large': 1.4
 }
 
 // --- 💻 Platform/Color Definitions ---
@@ -52,6 +54,7 @@ export const Colors = {
     tabIconDefault: COLOR_ICON_DEFAULT_LIGHT,
     tabIconSelected: COLOR_TINT_LIGHT,
     link: COLOR_TINT_LIGHT,
+    border: 'yellow', // TODO
   },
   dark: {
     text: COLOR_TEXT_DARK,
@@ -61,6 +64,7 @@ export const Colors = {
     tabIconDefault: COLOR_ICON_DEFAULT_DARK,
     tabIconSelected: COLOR_TINT_DARK,
     link: COLOR_TINT_DARK,
+    border: 'yellow', //TODO 
   },
 };
 
