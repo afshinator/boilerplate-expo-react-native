@@ -33,6 +33,14 @@ export const LINE_HEIGHT_LINK = 30;
 export const FONT_WEIGHT_SEMIBOLD = '600';
 export const FONT_WEIGHT_BOLD = 'bold';
 
+// fontScale to fontScaleFactor 
+export const fontScaleFactors = {
+  'small': 0.8,
+  'default': 1.0,
+  'large': 1.2,
+  'extra-large': 1.4
+}
+
 // --- 💻 Platform/Color Definitions ---
 
 export const Colors = {

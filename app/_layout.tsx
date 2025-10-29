@@ -15,8 +15,7 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   useEffect(() => {
-    // Load data from AsyncStorage and populate the Zustand store
-    initializeAppStateFromStorage();
+    initializeAppStateFromStorage();  // populate zustand store from AsyncStorage
   }, []); 
 
   return (

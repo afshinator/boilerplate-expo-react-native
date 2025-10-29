@@ -10,26 +10,21 @@ import {
   FONT_SIZE_TITLE,
   FONT_WEIGHT_BOLD,
   FONT_WEIGHT_SEMIBOLD,
+  fontScaleFactors,
   LINE_HEIGHT_DEFAULT,
   LINE_HEIGHT_LINK,
   LINE_HEIGHT_SMALL,
   LINE_HEIGHT_TITLE
 } from '@/constants/theme';
 import { useThemeColor } from '@/hooks/use-theme-color';
-
+import useAppSettings from '@/utils/appState';
 
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
   type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'small' | 'large';
-  /** * Scales all font sizes in this component.
-   * Defaults to 1.0 (no change).
-   * Sensible scaling factors:
-   * - 1.25 (to size fonts up by 25%)
-   * - 0.8 (to size fonts down by 20%)
-   */
-  fontScale?: number; 
+  propScaleFactor?: number;   // eg) fontScale size 'default' is 1.0, small would be 0.8, ..., see themes.ts
 };
 
 export function ThemedText({
@@ -37,21 +32,37 @@ export function ThemedText({
   lightColor,
   darkColor,
   type = 'default',
-  fontScale = 1.0, 
+  propScaleFactor = 1.0, // if not provided, uses the zustand state value (gotten from asyncStore)
   ...rest
 }: ThemedTextProps) {
   const colorKey = type === 'link' ? 'link' : 'text'; 
   const color = useThemeColor({ light: lightColor, dark: darkColor }, colorKey);
+  
+  // 1. Get global font scale size from Zustand store
+  const globalFontScaleSize = useAppSettings((state) => state.fontScale);
+
+  // 2. Determine the effective scale factor
+  let effectiveScaleFactor: number;
+  
+  // Check if the user explicitly provided a scaling factor 
+  if (propScaleFactor !== 1.0) {
+    effectiveScaleFactor = propScaleFactor;
+  } else {
+    // Global scale: use the factor mapped from the Zustand state
+    // Use the mapped value, falling back to 1.0 if the size from the store is unexpected
+    effectiveScaleFactor = fontScaleFactors[globalFontScaleSize] || 1.0;
+  }
+
 
   // Apply scaling factor to a size property
   const getScaledStyle = (baseStyle: any) => ({
     ...baseStyle,
     // Only scale if the base style defines a fontSize or lineHeight
     ...(baseStyle.fontSize !== undefined && { 
-      fontSize: baseStyle.fontSize * fontScale 
+      fontSize: baseStyle.fontSize * effectiveScaleFactor 
     }),
     ...(baseStyle.lineHeight !== undefined && { 
-      lineHeight: baseStyle.lineHeight * fontScale 
+      lineHeight: baseStyle.lineHeight * effectiveScaleFactor 
     }),
   });
 
