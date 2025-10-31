@@ -1,4 +1,4 @@
-//  utils/asyncStorage.ts
+// utils/asyncStorage.ts
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -13,10 +13,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const setItem = async (key: string, value: string): Promise<void> => {
   try {
     await AsyncStorage.setItem(key, value);
-    console.log(`AsyncStorage: Successfully set item for key: ${key}`);
+    // console.log(`🗄️ AsyncStorage: Successfully set item for key: ${key}`);
   } catch (error) {
-    console.error(`AsyncStorage Error: Could not set item for key ${key}`, error);
-    // You might want to throw the error or handle it more gracefully
+    console.error(`🗄️🚨 AsyncStorage Error: Could not set item for key ${key}`, error);
     throw error;
   }
 };
@@ -25,17 +24,17 @@ export const setItem = async (key: string, value: string): Promise<void> => {
  * Retrieves a string value for a given key from AsyncStorage.
  *
  * @param key - The key to retrieve the value for.
- * @returns A Promise that resolves to the string value, or null if the key doesn't exist.
+ * @returns A Promise that resolves to the string value, or null if the key doesn't exist or on error.
  */
 export const getItem = async (key: string): Promise<string | null> => {
   try {
     const value = await AsyncStorage.getItem(key);
-    console.log(`AsyncStorage: Retrieved value for key: ${key}`);
+    // console.log(`🗄️ AsyncStorage: Retrieved value for key: ${key}`);
     return value;
   } catch (error) {
-    console.error(`AsyncStorage Error: Could not get item for key ${key}`, error);
-    // You might want to return null or throw the error
-    throw error;
+    console.error(`🗄️🚨 AsyncStorage Error: Could not get item for key ${key}`, error);
+    // Return null on error for graceful failure in a getter
+    return null; 
   }
 };
 
@@ -47,15 +46,14 @@ export const getItem = async (key: string): Promise<string | null> => {
 export const getAllKeys = async (): Promise<readonly string[]> => {
   try {
     const keys = await AsyncStorage.getAllKeys();
-    console.log('AsyncStorage: Retrieved all keys:', keys);
+    console.log('🗄️ AsyncStorage: Retrieved all keys:', keys);
     return keys;
   } catch (error) {
-    console.error('AsyncStorage Error: Could not get all keys', error);
+    console.error('🗄️🚨 AsyncStorage Error: Could not get all keys', error);
     // You might want to return an empty array or throw the error
     throw error;
   }
 };
-
 
 /**
  * Stores a JavaScript object by stringifying it first.
@@ -68,7 +66,7 @@ export const setJSONObject = async <T extends object>(key: string, value: T): Pr
     const stringifiedValue = JSON.stringify(value);
     await setItem(key, stringifiedValue);
   } catch (error) {
-    console.error(`AsyncStorage Error: Could not stringify or set object for key ${key}`, error);
+    console.error(`🗄️🚨 AsyncStorage Error: Could not stringify or set object for key ${key}`, error);
     throw error;
   }
 };
@@ -86,7 +84,38 @@ export const getJSONObject = async <T extends object>(key: string): Promise<T | 
     }
     return null;
   } catch (error) {
-    console.error(`AsyncStorage Error: Could not get or parse object for key ${key}`, error);
+    console.error(`🗄️🚨 AsyncStorage Error: Could not get or parse object for key ${key}`, error);
     return null; // Return null on parsing error
+  }
+};
+
+/**
+ * 🗑️ Removes a specific key-value pair from AsyncStorage.
+ *
+ * @param key - The key to remove.
+ * @returns A Promise that resolves when the operation is complete.
+ */
+export const removeItem = async (key: string): Promise<void> => {
+  try {
+    await AsyncStorage.removeItem(key);
+    console.log(`🗄️ AsyncStorage: Successfully removed item for key: ${key}`);
+  } catch (error) {
+    console.error(`🗄️🚨 AsyncStorage Error: Could not remove item for key ${key}`, error);
+    throw error;
+  }
+};
+
+/**
+ * 💣 Clears all key-value pairs from AsyncStorage. Use with extreme caution.
+ *
+ * @returns A Promise that resolves when the operation is complete.
+ */
+export const clearAll = async (): Promise<void> => {
+  try {
+    await AsyncStorage.clear();
+    console.log('🗄️ AsyncStorage: Successfully cleared all data.');
+  } catch (error) {
+    console.error('🗄️🚨 AsyncStorage Error: Could not clear all data', error);
+    throw error;
   }
 };
